@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model detailpenjualan {
+  DetailD      Int       @id @default(autoincrement())
+  PenjualanID  Int
+  ProdukID     Int
+  JumlahProduk Int
+  SubTotal     Decimal   @db.Decimal(10, 2)
+  produk       produk    @relation(fields: [ProdukID], references: [ProdukID], onDelete: Cascade, map: "detailpenjualan_ibfk_1")
+  penjualan    penjualan @relation(fields: [PenjualanID], references: [PenjualanID], onDelete: Cascade, map: "detailpenjualan_ibfk_2")
+
+  @@index([PenjualanID], map: "PenjualanID")
+  @@index([ProdukID], map: "ProdukID")
+}
+
+model pelanggan {
+  PelangganID   Int         @id @default(autoincrement())
+  NamaPelanggan String      @db.VarChar(255)
+  Alamat        String      @db.Text
+  NomorTelpon   String      @db.VarChar(255)
+  penjualan     penjualan[]
+}
+
+model penjualan {
+  PenjualanID      Int               @id @default(autoincrement())
+  TanggalPenjualan DateTime          @db.Date
+  TotalHarga       Decimal           @db.Decimal(10, 2)
+  PelangganID      Int
+  detailpenjualan  detailpenjualan[]
+  pelanggan        pelanggan         @relation(fields: [PelangganID], references: [PelangganID], onDelete: Cascade, map: "penjualan_ibfk_1")
+
+  @@index([PelangganID], map: "PelangganID")
+}
+
+model produk {
+  ProdukID        Int               @id @default(autoincrement())
+  NamaProduk      String            @db.VarChar(255)
+  Harga           Decimal           @db.Decimal(10, 2)
+  Stok            Int
+  detailpenjualan detailpenjualan[]
+}
+
+model user {
+  UserID   Int       @id @default(autoincrement())
+  Nama     String    @db.VarChar(255)
+  Username String    @db.VarChar(255)
+  Password String    @db.VarChar(255)
+  Role     user_Role
+}
+
+enum user_Role {
+  admin
+  petugas
+}
