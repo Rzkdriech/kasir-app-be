@@ -12,9 +12,9 @@ export const gProduk = async (_, res) => {
 export const gProdukByParams = async (req, res) => {
   const paramsId = decodeURIComponent(req.params.id);
   try {
-    const produk = await prisma.produk.findFirst({
+    const produk = await prisma.barang.findFirst({
       where: {
-        NamaProduk: paramsId,
+        NAMA_BARANG: paramsId,
       },
     });
     res.status(200).json(produk);
@@ -35,14 +35,18 @@ export const cProduk = async (req, res) => {
   if (existData) return res.status(400).json({ msg: "product exists!" });
 
   try {
-    const produk = await prisma.produk.create({
+    const produk = await prisma.barang.create({
       data: {
-        NamaProduk: newProduk.namaProduk,
-        Harga: newProduk.harga,
-        Stok: newProduk.stok,
+        NAMA_BARANG: newProduk.namaBarang,
+        KATEGORI: newProduk.kategori,
+        SATUAN: newProduk.satuan,
+        HARGA_BELI: newProduk.hargaBeli,
+        HARGA_JUAL: newProduk.hargaJual,
+        STOK: newProduk.stok,
+        KETERANGAN: newProduk.keterangan,
+        BARCODE: newProduk.barcode
       },
     });
-
     res.status(201).json({ msg: "data created!", data: produk });
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -55,7 +59,7 @@ export const cmProduk = async (req, res) => {
   try {
     const createProduks = await prisma.barang.createMany({
       data: dataProduk,
-      skipDuplicates: false
+      skipDuplicates: true
     });
     res.status(201).json({ msg: "data created", data: createProduks });
   } catch (error) {
