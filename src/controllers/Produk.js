@@ -2,7 +2,7 @@ import { prisma } from "../database/db.js";
 
 export const gProduk = async (_, res) => {
   try {
-    const response = await prisma.produk.findMany();
+    const response = await prisma.barang.findMany();
     res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ msg: error.message });
@@ -44,6 +44,20 @@ export const cProduk = async (req, res) => {
     });
 
     res.status(201).json({ msg: "data created!", data: produk });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+export const cmProduk = async (req, res) => {
+  const dataProduk = req.body.dataProduk;
+
+  try {
+    const createProduks = await prisma.barang.createMany({
+      data: dataProduk,
+      skipDuplicates: false
+    });
+    res.status(201).json({ msg: "data created", data: createProduks });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
