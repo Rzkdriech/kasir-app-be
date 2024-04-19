@@ -1,20 +1,20 @@
 import { prisma } from "../database/db.js";
 
-export const gPelanggan = async(_, res) => {
+export const gPelanggan = async (_, res) => {
   try {
-    const response = await prisma.pelanggan.findMany()
-    res.status(200).json(response)
+    const response = await prisma.pelanggan.findMany();
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ msg: error.message })
+    res.status(500).json({ msg: error.message });
   }
-}
+};
 
 export const cPelanggan = async (req, res) => {
-  const newPelanggan = req.body;
+  const { alamat, namaPelanggan, nomorTelepon } = req.body;
 
   const isExist = await prisma.pelanggan.findFirst({
     where: {
-      NomorTelpon: newPelanggan.nomorTelpon,
+      NOMOR_TELEPON: nomorTelepon,
     },
   });
 
@@ -23,13 +23,13 @@ export const cPelanggan = async (req, res) => {
   try {
     const pelanggan = await prisma.pelanggan.create({
       data: {
-        NamaPelanggan: newPelanggan.namaPelanggan,
-        Alamat: newPelanggan.alamat,
-        NomorTelpon: newPelanggan.nomorTelpon,
+        NAMA_PELANGGAN: namaPelanggan,
+        ALAMAT: alamat,
+        NOMOR_TELEPON: nomorTelepon,
       },
     });
     res.status(201).json({ msg: "data created", data: pelanggan });
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ msg: error.message })
   }
 };
