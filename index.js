@@ -43,8 +43,9 @@ import pelanggan from "./src/routes/PelangganRoute.js";
 import detail from "./src/routes/PenjualanRoute.js";
 import auth from "./src/routes/AuthRoute.js";
 import pemasok from "./src/routes/PemasokRoute.js";
+import pembelian from "./src/routes/Pembelian.js";
 
-const routes = [produk, pelanggan, detail, auth, pemasok];
+const routes = [produk, pelanggan, detail, auth, pemasok, pembelian];
 
 routes.forEach((route) => {
   app.use(route);
