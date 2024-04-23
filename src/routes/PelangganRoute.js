@@ -2,15 +2,19 @@ import express from "express";
 
 import {
   cPelanggan, 
-  gPelanggan
+  dPelanggan, 
+  gPelanggan,
+  gPelangganByParams,
+  uPelanggan
 } from "../controllers/Pelanggan.js";
+import { verifyUser } from "../middleware/Auth.js";
 
 const router = express.Router();
 
-router.get("/kasir/customers", gPelanggan);
-router.get("/kasir/product/:id");
-router.post("/kasir/customer", cPelanggan);
-router.patch("/kasir/product/:id");
-router.delete("/kasir/product/:id");
+router.get("/kasir/customers",verifyUser, gPelanggan);
+router.get("/kasir/customer/:id",verifyUser, gPelangganByParams);
+router.post("/kasir/customer",verifyUser ,cPelanggan);
+router.patch("/kasir/customer/:id",verifyUser ,uPelanggan);
+router.delete("/kasir/customer/:id",verifyUser ,dPelanggan);
 
 export default router;
