@@ -23,8 +23,8 @@ export const cPelanggan = async (req, res) => {
   try {
     const pelanggan = await prisma.pelanggan.create({
       data: {
-        NAMA_PELANGGAN: newPelanggan.NOMOR_TELEPON,
-        ALAMAT: newPelanggan.NOMOR_TELEPON,
+        NAMA_PELANGGAN: newPelanggan.NAMA_PELANGGAN,
+        ALAMAT: newPelanggan.ALAMAT,
         NOMOR_TELEPON: newPelanggan.NOMOR_TELEPON,
       },
     });

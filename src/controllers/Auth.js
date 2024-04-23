@@ -35,6 +35,7 @@ export const Register = async (req, res) => {
     },
   });
 
+
   if (isExist) return res.status(400).json({ msg: "user existed" });
 
   try {
@@ -53,6 +54,15 @@ export const Register = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+
+export const gUsers = async(_, res) => {
+  try {
+    const response = await prisma.pengguna.findMany()
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json({ msg: error.message})
+  }
+}
 
 export const Me = async (req, res) => {
   if (!req.session.username) {
